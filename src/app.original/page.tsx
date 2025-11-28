@@ -7,7 +7,6 @@ import HeroSection from "./components/HeroSection";
 import BenefitsSection from "./components/BenefitsSection";
 import CloudTelefonieSection from "./components/CloudTelefonieSection";
 import PeoplefoneCalculatorSection from "./components/PeoplefoneCalculatorSection";
-import AboutSection from "./components/AboutSection";
 import PricesSection from "./components/PricesSection";
 import FAQSection from "./components/FAQSection";
 import FooterSection from "./components/FooterSection";
@@ -60,18 +59,13 @@ export default function Home() {
         <PeoplefoneCalculatorSection isDark={isDark} />
       </section>
 
-      {/* Sektion 4 – Über uns (neu, nach dem Rechner) */}
+      {/* Sektion 4 – Preise & Möglichkeiten */}
       <section className={isDark ? "bg-[#0A0A0A]" : "bg-white"}>
-        <AboutSection isDark={isDark} />
-      </section>
-
-      {/* Sektion 5 – Preise & Möglichkeiten */}
-      <section className={isDark ? "bg-[#0F0F0F]" : "bg-[#F8F8F8]"}>
         <PricesSection isDark={isDark} />
       </section>
 
-      {/* Sektion 6 – FAQ */}
-      <section className={isDark ? "bg-[#0A0A0A]" : "bg-white"}>
+      {/* Sektion 5 – FAQ */}
+      <section className={isDark ? "bg-[#0F0F0F]" : "bg-[#F8F8F8]"}>
         <FAQSection isDark={isDark} />
       </section>
 

@@ -182,11 +182,11 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
     const total =
       users > 0 || numbers > 0
         ? pkg.price +
-          tariffPrice +
-          softphonePrice +
-          numberPrice +
-          internetPrice +
-          ipPrice
+        tariffPrice +
+        softphonePrice +
+        numberPrice +
+        internetPrice +
+        ipPrice
         : 0;
 
     /* ------------------------------ Rückgabe-Werte ------------------------------ */
@@ -428,13 +428,16 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
           {/* Minutentarif ---------------------------------------------------- */}
 
+          {/* Minutentarif ---------------------------------------------------- */}
+
           <label
-            className={`flex items-center gap-2 py-[2px] ${labelMuted}`}
+            className={`flex items-start gap-2 py-[2px] ${labelMuted}`}
           >
             <input
               type="radio"
               checked={tariff === "minute"}
               onChange={() => handleTariffChange("minute")}
+              className="mt-1"
             />
 
             <span>
@@ -447,23 +450,26 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
           <label
             className={
-              "flex flex-wrap items-center gap-2 py-[4px] " +
+              "flex flex-wrap items-start gap-2 py-[4px] " +
               labelMuted
             }
           >
-            <input
-              type="radio"
-              checked={tariff === "flat_ch"}
-              onChange={() => handleTariffChange("flat_ch")}
-            />
+            <div className="flex items-start gap-2 w-full sm:w-auto">
+              <input
+                type="radio"
+                checked={tariff === "flat_ch"}
+                onChange={() => handleTariffChange("flat_ch")}
+                className="mt-1"
+              />
 
-            <span>
-              Flatrate CH – 1000 Min Festnetz / 200 Min Mobil Schweiz
-              – CHF 19.– / Benutzer
-            </span>
+              <span className="flex-1 sm:flex-none">
+                Flatrate CH – 1000 Min Festnetz / 200 Min Mobil Schweiz
+                – CHF 19.– / Benutzer
+              </span>
+            </div>
 
             {tariff === "flat_ch" && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pl-6 sm:pl-0">
                 <span className="text-xs uppercase tracking-wide opacity-70">
                   Anzahl Flatrates
                 </span>
@@ -488,23 +494,26 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
           <label
             className={
-              "flex flex-wrap items-center gap-2 py-[4px] " +
+              "flex flex-wrap items-start gap-2 py-[4px] " +
               labelMuted
             }
           >
-            <input
-              type="radio"
-              checked={tariff === "flat_cheu"}
-              onChange={() => handleTariffChange("flat_cheu")}
-            />
+            <div className="flex items-start gap-2 w-full sm:w-auto">
+              <input
+                type="radio"
+                checked={tariff === "flat_cheu"}
+                onChange={() => handleTariffChange("flat_cheu")}
+                className="mt-1"
+              />
 
-            <span>
-              Flatrate CH+EU – 1000 Min Festnetz CH+EU / 300 Min Mobil
-              CH+EU – CHF 22.– / Benutzer
-            </span>
+              <span className="flex-1 sm:flex-none">
+                Flatrate CH+EU – 1000 Min Festnetz CH+EU / 300 Min Mobil
+                CH+EU – CHF 22.– / Benutzer
+              </span>
+            </div>
 
             {tariff === "flat_cheu" && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pl-6 sm:pl-0">
                 <span className="text-xs uppercase tracking-wide opacity-70">
                   Anzahl Flatrates
                 </span>
@@ -536,12 +545,13 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
           </p>
 
           <label
-            className={`flex items-center gap-2 py-[2px] ${labelMuted}`}
+            className={`flex items-start gap-2 py-[2px] ${labelMuted}`}
           >
             <input
               type="checkbox"
               checked={internet}
               onChange={() => setInternet(!internet)}
+              className="mt-1"
             />
 
             <span>
@@ -550,12 +560,13 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
           </label>
 
           <label
-            className={`flex items-center gap-2 py-[2px] ${labelMuted}`}
+            className={`flex items-start gap-2 py-[2px] ${labelMuted}`}
           >
             <input
               type="checkbox"
               checked={fixedIp}
               onChange={() => setFixedIp(!fixedIp)}
+              className="mt-1"
             />
 
             <span>
@@ -574,27 +585,27 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
           Monatlicher Fixpreis für Ihre Telefonie
         </h3>
 
-        <div className="space-y-2 text-sm md:text-[15px]">
+        <div className="space-y-3 text-sm md:text-[15px]">
           {/* Benutzerpaket -------------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Benutzerpaket ({pkgLabel})
             </span>
 
-            <span>
+            <span className="font-medium whitespace-nowrap">
               CHF {pkgPrice}.–
             </span>
           </div>
 
           {/* Tarifmodell ---------------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Tarifmodell
             </span>
 
-            <span>
+            <span className="font-medium text-right">
               {tariff === "minute"
                 ? "gemäss Minutentarif"
                 : `CHF ${tariffPrice}.–`}
@@ -603,48 +614,48 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
           {/* Rufnummern ----------------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Rufnummern-Paket ({numbers} Nummern)
             </span>
 
-            <span>
+            <span className="font-medium whitespace-nowrap">
               CHF {numberPrice}.–
             </span>
           </div>
 
           {/* Softphone-Lizenzen -------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Softphone-Lizenzen ({softphones} × CHF 2.–)
             </span>
 
-            <span>
+            <span className="font-medium whitespace-nowrap">
               CHF {softphonePrice}.–
             </span>
           </div>
 
           {/* Internet ------------------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Internet 1 Gbit/s
             </span>
 
-            <span>
+            <span className="font-medium whitespace-nowrap">
               {internetPrice ? `CHF ${internetPrice}.–` : "–"}
             </span>
           </div>
 
           {/* Fixe IP -------------------------------------------------------- */}
 
-          <div className="flex justify-between gap-4">
-            <span>
+          <div className="flex justify-between items-start gap-4">
+            <span className="flex-1">
               Fixe IP-Adresse
             </span>
 
-            <span>
+            <span className="font-medium whitespace-nowrap">
               {ipPrice ? `CHF ${ipPrice}.–` : "–"}
             </span>
           </div>
@@ -652,17 +663,17 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         <hr className={`my-4 ${hrClass}`} />
 
-        <div className="flex items-baseline justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
           <span className="text-sm font-medium">
             Monatlicher Fixpreis (ohne Gesprächsgebühren)
           </span>
 
-          <span className="text-3xl font-bold md:text-4xl">
+          <span className="text-3xl font-bold md:text-4xl text-right">
             CHF {total}.–
           </span>
         </div>
 
-        <p className={`mt-2 text-[11px] ${smallMuted}`}>
+        <p className={`mt-4 text-[11px] ${smallMuted}`}>
           Zzgl. einmaliger Installation, Aufschaltung und allfälliger
           Portierungskosten. Spezialnummern (z.B. 0800, 058) werden
           separat offeriert.
@@ -672,6 +683,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       {/* ------------------------------------------------------------------ */}
       {/*                           Call-To-Action                           */}
       {/* ------------------------------------------------------------------ */}
+
+
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
@@ -683,11 +696,12 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         <a
           href="https://infraone.ch/kontakt"
+          target="_blank"
           className="flex-1 rounded-md border border-[#3C9646] py-3 text-center text-sm font-semibold hover:bg-[#3C9646]/10"
         >
           Persönliche Beratung anfordern
         </a>
       </div>
-    </section>
+    </section >
   );
 }

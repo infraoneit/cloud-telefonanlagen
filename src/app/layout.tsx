@@ -34,10 +34,13 @@ export const metadata: Metadata = {
     "KMU Telefonie Schweiz",
   ],
   alternates: { canonical: "https://www.cloud-telefonanlagen.ch" },
+  icons: {
+    icon: "/cloud-telefonanlagen-schweiz-infraone-it-solutions-gmbh-favicon.svg",
+  },
   openGraph: {
     title: "Cloud-Telefonanlagen Schweiz – InfraOne",
     description:
-  "Cloud-Telefonanlagen für KMU in der Schweiz – sofort startklar, ohne Hardware. Preise ab CHF 20/Monat. Peoplefone, 3CX, Teams, Wildix & Yeastar. Angebot erhalten & Telefonie in 72h produktiv.",
+      "Cloud-Telefonanlagen für KMU in der Schweiz – sofort startklar, ohne Hardware. Preise ab CHF 20/Monat. Peoplefone, 3CX, Teams, Wildix & Yeastar. Angebot erhalten & Telefonie in 72h produktiv.",
 
     url: "https://www.cloud-telefonanlagen.ch",
     siteName: "InfraOne Cloud Telefonie",
@@ -65,7 +68,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
+              "@type": "TelecommunicationsService",
               name: "InfraOne IT Solutions GmbH",
               image: "https://www.cloud-telefonanlagen.ch/heroimage.png",
               url: "https://www.cloud-telefonanlagen.ch",
@@ -76,15 +79,15 @@ export default function RootLayout({
                 streetAddress: "Winterthur",
                 addressCountry: "CH",
               },
-              areaServed: [
-                "Winterthur",
-                "Schaffhausen",
-                "Zürich",
-                "Thurgau",
-                "St. Gallen",
-                "Schweiz",
-              ],
+              areaServed: "CH",
               contactPoint: [
+                {
+                  "@type": "ContactPoint",
+                  telephone: "+41522221818",
+                  contactType: "customer service",
+                  areaServed: "CH",
+                  availableLanguage: ["de", "en"],
+                },
                 {
                   "@type": "ContactPoint",
                   telephone: "+41765875055",
@@ -112,32 +115,32 @@ export default function RootLayout({
                   {
                     "@type": "Service",
                     name: "Peoplefone Hosted",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                   {
                     "@type": "Service",
                     name: "3CX PBX",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                   {
                     "@type": "Service",
                     name: "Microsoft Teams Telefonie",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                   {
                     "@type": "Service",
                     name: "Wildix Cloud PBX",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                   {
                     "@type": "Service",
                     name: "Yeastar VoIP",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                   {
                     "@type": "Service",
                     name: "Migration von Mitel",
-                    areaServed: "Schweiz",
+                    areaServed: "CH",
                   },
                 ],
               },

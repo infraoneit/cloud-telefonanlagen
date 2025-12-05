@@ -59,6 +59,7 @@ export default function PricesSection({ isDark }: Props) {
           </p>
           <a
             href="https://infraone.ch/kontakt"
+            target="_blank"
             className="font-medium text-[#3C9646] underline"
           >
             Offerte anfordern
@@ -76,6 +77,7 @@ export default function PricesSection({ isDark }: Props) {
           </p>
           <a
             href="https://infraone.ch/kontakt"
+            target="_blank"
             className="font-medium text-[#3C9646] underline"
           >
             Beratungstermin vereinbaren

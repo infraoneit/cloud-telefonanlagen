@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, BadgeSwissFranc, Zap, Layers3 } from "lucide-react";
+import { MapPin, Wallet, Zap, Layers3 } from "lucide-react";
 
 type Props = { isDark: boolean };
 
@@ -27,7 +27,7 @@ export default function BenefitsSection({ isDark }: Props) {
       </h2>
 
       <div className="mt-10 grid gap-6 md:grid-cols-2">
-        
+
         {/* Karte 1 – regionale Stärke */}
         <div className={`${cardBase} ${cardTheme}`}>
           <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ export default function BenefitsSection({ isDark }: Props) {
             <h3 className="text-lg font-semibold">Regionale Nähe</h3>
           </div>
           <p className={textMuted}>
-            Wir betreiben Cloud-Telefonanlagen für Unternehmen in 
+            Wir betreiben Cloud-Telefonanlagen für Unternehmen in
             <strong> Winterthur, Schaffhausen, Thurgau </strong> und der gesamten Schweiz.
             Direkter Technik-Kontakt statt Hotline-Warteschleifen.
           </p>
@@ -44,11 +44,11 @@ export default function BenefitsSection({ isDark }: Props) {
         {/* Karte 2 – Kostenklarheit */}
         <div className={`${cardBase} ${cardTheme}`}>
           <div className="flex items-center gap-3">
-            <BadgeSwissFranc className="h-6 w-6 text-[#3C9646]" />
+            <Wallet className="h-6 w-6 text-[#3C9646]" />
             <h3 className="text-lg font-semibold">Planbare Kosten</h3>
           </div>
           <p className={textMuted}>
-            Keine teure Hardware-Anlage mehr. Monatlich kalkulierbare Cloud-Telefonie 
+            Keine teure Hardware-Anlage mehr. Monatlich kalkulierbare Cloud-Telefonie
             mit klaren Preisen – ideal für KMU.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function BenefitsSection({ isDark }: Props) {
             <h3 className="text-lg font-semibold">Schnelle Umsetzung</h3>
           </div>
           <p className={textMuted}>
-            Einrichtung und Portierung in wenigen Tagen. 
+            Einrichtung und Portierung in wenigen Tagen.
             Cloud-Telefonanlagen starten ohne Vor-Ort-Hardware.
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function BenefitsSection({ isDark }: Props) {
             <h3 className="text-lg font-semibold">Alles aus einer Hand</h3>
           </div>
           <p className={textMuted}>
-            Telefonie, Internet, Netzwerk & Security – 
+            Telefonie, Internet, Netzwerk & Security –
             eine Lösung, ein Ansprechpartner, kein Schnittstellen-Chaos.
           </p>
         </div>

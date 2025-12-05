@@ -11,6 +11,7 @@ import AboutSection from "./components/AboutSection";
 import PricesSection from "./components/PricesSection";
 import FAQSection from "./components/FAQSection";
 import FooterSection from "./components/FooterSection";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -77,6 +78,7 @@ export default function Home() {
 
       {/* Footer bleibt immer schwarz */}
       <FooterSection />
+      <WhatsAppButton />
     </main>
   );
 }

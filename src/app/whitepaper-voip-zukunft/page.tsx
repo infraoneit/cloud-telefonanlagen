@@ -236,12 +236,12 @@ export default function WhitepaperPage() {
 
                         <div className="space-y-4 mt-8">
                             <h3 className="text-xl font-semibold">2. Flat-Pakete</h3>
-                            <p>Für Vieltelefonierer sind Flat-Pakete buchbar (verfügbar ab zwei Benutzern). Die Preise gelten pro Benutzer und Monat (CHF inkl. MwSt.).</p>
+                            <p>Für Vieltelefonierer sind Flat-Pakete buchbar. Die Preise pro Flatpaket gelten monatlich (CHF inkl. MwSt.). Die Pakete beziehen sich auf die gesamte Anlage – nicht auf einzelne Benutzer – und können monatlich flexibel erweitert oder reduziert werden.</p>
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className={`border rounded-lg p-6 flex flex-col ${isDark ? "bg-[#0F0F0F] border-white/10" : "bg-white border-gray-200"}`}>
                                     <h4 className="text-lg font-bold text-[#3C9646] mb-2">FLAT CH</h4>
-                                    <div className="text-3xl font-bold mb-4">CHF 19.– <span className={`text-sm font-normal ${isDark ? "text-gray-500" : "text-gray-400"}`}>/ Benutzer / Monat</span></div>
+                                    <div className="text-3xl font-bold mb-4">CHF 19.– <span className={`text-sm font-normal ${isDark ? "text-gray-500" : "text-gray-400"}`}>/ Monat</span></div>
                                     <ul className="space-y-2 text-sm">
                                         <li className="flex items-start gap-2">
                                             <Check className="h-4 w-4 text-green-500 mt-0.5" />
@@ -256,7 +256,7 @@ export default function WhitepaperPage() {
 
                                 <div className={`border rounded-lg p-6 flex flex-col ${isDark ? "bg-[#0F0F0F] border-white/10" : "bg-white border-gray-200"}`}>
                                     <h4 className="text-lg font-bold text-[#3C9646] mb-2">FLAT CH & EU</h4>
-                                    <div className="text-3xl font-bold mb-4">CHF 22.– <span className={`text-sm font-normal ${isDark ? "text-gray-500" : "text-gray-400"}`}>/ Benutzer / Monat</span></div>
+                                    <div className="text-3xl font-bold mb-4">CHF 22.– <span className={`text-sm font-normal ${isDark ? "text-gray-500" : "text-gray-400"}`}>/ Monat</span></div>
                                     <ul className="space-y-2 text-sm">
                                         <li className="flex items-start gap-2">
                                             <Check className="h-4 w-4 text-green-500 mt-0.5" />

@@ -73,8 +73,13 @@ export default function FooterSection() {
         </div>
       </div>
 
-      <div className="mx-auto mt-10 max-w-6xl border-t border-white/20 pt-4 text-xs opacity-70 flex flex-col md:flex-row justify-between">
+      <div className="mx-auto mt-10 max-w-6xl border-t border-white/20 pt-4 text-xs opacity-70 flex flex-col md:flex-row justify-between items-center gap-4">
         <span>© 2025 – InfraOne IT Solutions GmbH</span>
+        <div className="flex gap-4">
+          <a href="https://www.infraone.ch/agb" target="_blank" className="hover:text-white transition-colors">AGB</a>
+          <a href="https://www.infraone.ch/datenschutz" target="_blank" className="hover:text-white transition-colors">Datenschutz</a>
+          <a href="https://www.infraone.ch/impressum" target="_blank" className="hover:text-white transition-colors">Impressum</a>
+        </div>
         <span>Webdesign & Realisation: InfraOne IT Solutions</span>
       </div>
     </footer>

@@ -94,12 +94,12 @@ export default function HeroSection({ isDark }: HeroProps) {
               Cloud-Telefonanlagen · Schweiz · Winterthur · Schaffhausen · Thurgau
             </p>
 
-            {/* H1 mit Autotype */}
-            <h1 className="text-3xl font-bold leading-tight sm:text-4xl min-h-[3em] sm:min-h-[2.5em]">
+            {/* H1 mit Autotype (Mobile displayed as div to avoid duplicate H1 tag) */}
+            <div className="text-3xl font-bold leading-tight sm:text-4xl min-h-[3em] sm:min-h-[2.5em]" role="heading" aria-level={1}>
               <span className="text-[#3C9646]">{displayGreen}</span>
               {displayRest}
               {showCursor && <span className="animate-pulse">|</span>}
-            </h1>
+            </div>
 
             {/* CTAs */}
             <div className="mt-8 mb-10 flex flex-col gap-4 sm:flex-row w-full sm:w-auto">

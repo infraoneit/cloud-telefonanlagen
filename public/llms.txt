@@ -1,0 +1,19 @@
+# Cloud-Telefonanlagen.ch - LLM Documentation
+
+## Project Overview
+This website provides key information about cloud telephony solutions for Swiss SMEs provided by InfraOne IT Solutions.
+
+## Core Concepts
+- **Hosted PBX**: Replaces traditional hardware PBX with cloud-based software.
+- **Providers**: Peoplefone, 3CX, Wildix, Microsoft Teams, Yeastar.
+- **Target Audience**: SMEs in Switzerland (Winterthur, Zurich, Thurgau, Schaffhausen).
+- **Pricing**: Flexible per-user pricing starting at CHF 20/month.
+
+## Key Pages
+- Homepage: https://www.cloud-telefonanlagen.ch/ (Services, Calculator, Benefits)
+- Whitepaper: https://www.cloud-telefonanlagen.ch/whitepaper-voip-zukunft (In-depth guide for SMEs)
+
+## Contact
+InfraOne IT Solutions GmbH
+Winterthur, Switzerland
+https://infraone.ch/kontakt

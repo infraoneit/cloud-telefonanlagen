@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cloud-Telefonanlagen Schweiz | InfraOne IT Solutions",
   description:
-    "Cloud-Telefonanlagen für KMU in der Schweiz – Peoplefone Hosted, 3CX, MS Teams, Wildix, Yeastar. Betreuung in Winterthur, Schaffhausen, Zürich, Thurgau & St. Gallen. Preise ab CHF 20/Monat.",
+    "Cloud-Telefonanlagen für Schweizer KMU: Moderne VoIP-Lösungen mit Peoplefone, 3CX & Wildix. Flexible Tarife, sichere Anbindung, einfache Verwaltung und persönlicher IT-Support aus Winterthur.",
   keywords: [
     "Cloud Telefonanlage Schweiz",
     "Cloud PBX",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cloud-Telefonanlagen Schweiz – InfraOne",
     description:
-      "Cloud-Telefonanlagen für KMU in der Schweiz – sofort startklar, ohne Hardware. Preise ab CHF 20/Monat. Peoplefone, 3CX, Teams, Wildix & Yeastar. Angebot erhalten & Telefonie in 72h produktiv.",
+      "Cloud-Telefonanlagen für Schweizer KMU: Moderne VoIP-Lösungen mit Peoplefone, 3CX & Wildix. Flexible Tarife, sichere Anbindung, einfache Verwaltung und persönlicher IT-Support aus Winterthur.",
 
     url: "https://www.cloud-telefonanlagen.ch",
     siteName: "InfraOne Cloud Telefonie",
@@ -60,6 +61,21 @@ export default function RootLayout({
     <html lang="de">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-GJR6Z88Y3E"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-GJR6Z88Y3E');
+          `}
+        </Script>
 
         {/* STRUCTURED DATA – POWER BOOST */}
         <script

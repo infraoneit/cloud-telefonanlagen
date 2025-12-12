@@ -4,6 +4,7 @@ export const metadata: Metadata = {
     title: "VoIP Zukunft: Whitepaper zu Cloud-Telefonanlagen | InfraOne",
     description:
         "Erfahren Sie im Experten-Whitepaper alles über die Zukunft der VoIP-Telefonie. Kosten, Funktionen und Vorteile von Cloud-Telefonanlagen für Schweizer KMU.",
+    alternates: { canonical: "https://www.cloud-telefonanlagen.ch/whitepaper-voip-zukunft" },
     openGraph: {
         title: "VoIP Zukunft: Whitepaper zu Cloud-Telefonanlagen | InfraOne",
         description:

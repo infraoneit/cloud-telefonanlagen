@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cloud-Telefonanlagen Schweiz | InfraOne IT Solutions",
   description:
-    "Cloud-Telefonanlagen für Schweizer KMU: Moderne VoIP-Lösungen mit Peoplefone, 3CX & Wildix. Flexible Tarife, sichere Anbindung, einfache Verwaltung und persönlicher IT-Support aus Winterthur.",
+    "Cloud-Telefonanlagen für Schweizer KMU: VoIP mit Peoplefone & 3CX, Flexible Tarife, sichere Anbindung und persönlicher Support aus Winterthur.",
   keywords: [
     "Cloud Telefonanlage Schweiz",
     "Cloud PBX",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cloud-Telefonanlagen Schweiz – InfraOne",
     description:
-      "Cloud-Telefonanlagen für Schweizer KMU: Moderne VoIP-Lösungen mit Peoplefone, 3CX & Wildix. Flexible Tarife, sichere Anbindung, einfache Verwaltung und persönlicher IT-Support aus Winterthur.",
+      "Cloud-Telefonanlagen für Schweizer KMU: VoIP mit Peoplefone & 3CX, Flexible Tarife, sichere Anbindung und persönlicher Support aus Winterthur.",
 
     url: "https://www.cloud-telefonanlagen.ch",
     siteName: "InfraOne Cloud Telefonie",

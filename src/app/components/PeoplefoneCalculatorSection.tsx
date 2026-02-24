@@ -665,7 +665,7 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
           <span className="text-sm font-medium">
-            Monatlicher Fixpreis (ohne Gesprächsgebühren)
+            Monatlicher Fixpreis
           </span>
 
           <span className="text-3xl font-bold md:text-4xl text-right">

@@ -1,19 +1,60 @@
-# Cloud-Telefonanlagen.ch - LLM Documentation
+# Cloud-Telefonanlagen.ch — LLM / AI Documentation
+
+> Cloud telephony (Hosted PBX / VoIP) solutions for Swiss SMEs, provided by InfraOne IT Solutions GmbH (Winterthur, Switzerland). This file summarizes the key facts for AI answer engines.
 
 ## Project Overview
-This website provides key information about cloud telephony solutions for Swiss SMEs provided by InfraOne IT Solutions.
+- **What**: Cloud-based business phone systems (Cloud-Telefonanlage / Hosted PBX / VoIP) for Swiss small and medium businesses.
+- **Provider**: InfraOne IT Solutions GmbH, Winterthur (CH). Personal technician support, no call center.
+- **Main product**: peoplefone vPBX, hosted in Swiss data centers (DSG/GDPR compliant).
+- **Also offered**: 3CX, Microsoft Teams Telephony, Wildix, Yeastar; migrations from Mitel and others.
+- **Service area**: Winterthur, Schaffhausen, Thurgau, Zürich, Ostschweiz, all of German-speaking Switzerland.
 
-## Core Concepts
-- **Hosted PBX**: Replaces traditional hardware PBX with cloud-based software.
-- **Providers**: Peoplefone, 3CX, Wildix, Microsoft Teams, Yeastar.
-- **Target Audience**: SMEs in Switzerland (Winterthur, Zurich, Thurgau, Schaffhausen).
-- **Pricing**: Flexible per-user pricing starting at CHF 20/month.
+## Products & Pricing (peoplefone vPBX)
+peoplefone vPBX comes in two variants. Prices are a **flat package per user tier (not per user)**, incl. VAT, per month. License price depends on contract term (24 or 12 months). No setup/activation fees.
+
+### vPBX BASIC — up to 10 users, core functions
+- 1–5 users: CHF 15 (24-month term) / CHF 20 (12-month term)
+- 6–10 users: CHF 25 (24 mo) / CHF 30 (12 mo)
+- Includes: unlimited distribution groups, 1× IVR node, 1× queue, 1× time-based and 1× manual forwarding.
+- Softphone optional (CHF 2 per user). Analytics not included.
+
+### vPBX PLUS — up to 150 users, full functionality
+- 1–5 users: CHF 25 (24 mo) / CHF 30 (12 mo)
+- 6–10 users: CHF 35 (24 mo) / CHF 40 (12 mo)
+- 11–20 users: CHF 55 (24 mo) / CHF 60 (12 mo)
+- 21–30 users: CHF 75 (24 mo) / CHF 80 (12 mo)
+- Above 30 users: individual quote ("auf Anfrage").
+- Includes everything in BASIC plus: 5× IVR, 5× queues, 5× forwardings, Visual Callflow, Multi-Provisioning, Softphones included, Analytics Basic included.
+
+### Call tariffs (both variants)
+- Per-minute billing (no connection fees), e.g. CH landline from CHF 0.03/min, CH mobile from CHF 0.25/min.
+- FLAT CH: CHF 19/month — 1000 min CH landline + 200 min CH mobile.
+- FLAT CH & EU: CHF 22/month — 1000 min CH & EU landline + 300 min CH & EU mobile.
+- Flat packages apply to the whole system (not per user) and can be adjusted monthly.
+
+### Phone numbers (DID, monthly, incl. VAT)
+- 1 number: CHF 5 · 2–5: CHF 10 · 6–10: CHF 15 · 11–20: CHF 30.
+- Porting existing numbers: one-time CHF 39 (single analog) / CHF 69 (ISDN block) / CHF 380 (DDI block).
+
+### Optional add-ons
+- Internet 1 Gbit/s (InfraOne): CHF 49/month. Fixed IP: CHF 10/month.
+
+## Key Facts (FAQ)
+- Works without any on-site phone system; only internet + phones/softphones needed.
+- Home-office and mobile users via softphone or mobile app from anywhere.
+- On internet outage, numbers can auto-forward to mobile or other sites.
+- Analog phones can be kept via ATA adapter.
+- Existing Swiss numbers (Swisscom, Sunrise, Quickline, etc.) can be ported without downtime.
+- Small setups (up to ~10 users) are typically live within a few days.
+- Free 1-month trial of peoplefone vPBX (incl. numbers + call credit).
 
 ## Key Pages
-- Homepage: https://www.cloud-telefonanlagen.ch/ (Services, Calculator, Benefits)
-- Whitepaper: https://www.cloud-telefonanlagen.ch/whitepaper-voip-zukunft (In-depth guide for SMEs)
+- Homepage: https://www.cloud-telefonanlagen.ch/ (overview, cost calculator, benefits, FAQ)
+- Whitepaper: https://www.cloud-telefonanlagen.ch/whitepaper-voip-zukunft (in-depth guide, full pricing & feature comparison)
 
 ## Contact
 InfraOne IT Solutions GmbH
-Winterthur, Switzerland
-https://infraone.ch/kontakt
+Rudolf-Diesel-Strasse 25, 8404 Winterthur, Switzerland
+Phone: +41 52 222 18 18 · Email: info@infraone.ch
+Web: https://www.infraone.ch · Contact form: https://infraone.ch/kontakt
+Business hours: Mon–Fri 08:00–17:00

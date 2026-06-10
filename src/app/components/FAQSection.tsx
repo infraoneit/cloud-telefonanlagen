@@ -1,6 +1,6 @@
 "use client";
 
-const faqs = [
+export const faqs = [
   {
     q: "Funktioniert das ohne lokale Telefonanlage?",
     a: "Ja. Die Cloud-Telefonanlage läuft komplett im Schweizer Rechenzentrum. Vor Ort benötigen Sie nur Internet, Telefone oder Softphones.",
@@ -33,8 +33,8 @@ const faqs = [
     a: "Ideal für KMU, Verwaltungen und Unternehmen mit Home-Office oder mehreren Standorten. Besonders häufig betreuen wir Kunden in Winterthur, Schaffhausen, Thurgau und Ostschweiz.",
   },
   {
-    q: "Peoplefone Hosted oder 3CX – was ist besser?",
-    a: "Peoplefone Hosted ist ideal für einfache, skalierbare Telefonie mit klaren Preisen. 3CX bietet mehr Flexibilität, Callcenter-Funktionen und Integrationen. Wir empfehlen je nach Anforderungen das passende System.",
+    q: "peoplefone vPBX oder 3CX – was ist besser?",
+    a: "peoplefone vPBX ist ideal für einfache, skalierbare Telefonie mit klaren Preisen – als BASIC (bis 10 Benutzer) oder PLUS (bis 150 Benutzer, voller Funktionsumfang). 3CX bietet mehr Flexibilität, Callcenter-Funktionen und Integrationen. Wir empfehlen je nach Anforderungen das passende System.",
   },
   {
     q: "Können bestehende Rufnummern übernommen werden?",

@@ -29,21 +29,23 @@ export default function PricesSection({ isDark }: Props) {
         className={`mt-4 max-w-3xl text-sm md:text-base ${textMuted}`}
       >
         Unsere Lösungen sind skalierbar von kleinen Teams bis grösseren
-        Standorten. Ideal für Kunden in Winterthur, Schaffhausen, Thurgau und
-        der gesamten Deutschschweiz. Cloud-Telefonanlagen lassen sich flexibel
-        an Wachstum und Teamgrössen anpassen – ohne lokale Telefonanlage,
-        ohne Wartungsaufwand.
+        Standorten – mit <strong>peoplefone vPBX BASIC</strong> (bis 10 Benutzer)
+        und <strong>vPBX PLUS</strong> (bis 150 Benutzer). Ideal für Kunden in
+        Winterthur, Schaffhausen, Thurgau und der gesamten Deutschschweiz.
+        Cloud-Telefonanlagen lassen sich flexibel an Wachstum und Teamgrössen
+        anpassen – ohne lokale Telefonanlage, ohne Wartungsaufwand.
       </p>
 
       {/* Karten unverändert */}
       <div className="mt-10 grid gap-6 md:grid-cols-3">
         <div className={`${cardBase} ${cardTheme}`}>
           <h3 className="mb-2 text-base font-semibold">
-            Kostenrechner Cloud-Telefonanlage (Peoplefone Hosted)
+            Kostenrechner Cloud-Telefonanlage (peoplefone vPBX)
           </h3>
           <p className={`mb-3 ${textMuted}`}>
-            In 30 Sekunden eine realistische monatliche Preisindikation
-            erstellen. Ideal für Budgetplanung &amp; Entscheidungsfindung.
+            In 30 Sekunden eine realistische monatliche Preisindikation für
+            vPBX BASIC oder PLUS erstellen. Ideal für Budgetplanung &amp;
+            Entscheidungsfindung.
           </p>
           <a href="#rechner" className="font-medium text-[#3C9646] underline">
             Direkt zum Kostenrechner
@@ -53,9 +55,9 @@ export default function PricesSection({ isDark }: Props) {
         <div className={`${cardBase} ${cardTheme}`}>
           <h3 className="mb-2 text-base font-semibold">Individuelle Offerte</h3>
           <p className={`mb-3 ${textMuted}`}>
-            Für Cloud-Telefonanlagen mit 5–100 Benutzer:innen erstellen wir
-            individuelle Angebote mit Peoplefone Hosted oder 3CX – passgenau,
-            skalierbar und DSG-konform in Schweizer Rechenzentren.
+            Für grössere Cloud-Telefonanlagen (vPBX PLUS bis 150 Benutzer oder
+            3CX) erstellen wir individuelle Angebote – passgenau, skalierbar
+            und DSG-konform in Schweizer Rechenzentren.
           </p>
           <a
             href="https://infraone.ch/kontakt"

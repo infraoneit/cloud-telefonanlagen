@@ -28,7 +28,7 @@ export default function AboutSection({ isDark }: Props) {
       </p>
 
       <p className={`mt-4 max-w-3xl ${text}`}>
-        Wir arbeiten mit führenden Systemen wie <strong>Peoplefone Hosted</strong>
+        Wir arbeiten mit führenden Systemen wie <strong>peoplefone vPBX</strong>
         und <strong>3CX</strong>. Von der Planung über Portierung und Aufschaltung
         bis zum Betrieb erhalten Sie alles aus einer Hand – ohne Callcenter,
         sondern direkt von Technikern mit Erfahrung.
@@ -36,13 +36,13 @@ export default function AboutSection({ isDark }: Props) {
 
       <ul className={`mt-6 space-y-2 ${text}`}>
         <li>✔ Cloud-Telefonanlagen für KMU & Mehrstandort-Unternehmen</li>
-        <li>✔ Peoplefone Hosted & 3CX – flexibel, skalierbar, zuverlässig</li>
+        <li>✔ peoplefone vPBX (BASIC & PLUS) & 3CX – flexibel, skalierbar, zuverlässig</li>
         <li>✔ Persönliche Betreuung statt Hotline-Warteschleifen</li>
         <li>✔ Infrastruktur & Datenhaltung ausschliesslich in der Schweiz</li>
       </ul>
 
       <a
-        href="https://infraone.ch/unternehmen"
+        href="https://www.infraone.ch"
         target="_blank"
         rel="noreferrer"
         className="inline-block mt-8 rounded-md bg-[#3C9646] px-6 py-3 text-sm font-semibold text-black hover:bg-[#2d7e36]"

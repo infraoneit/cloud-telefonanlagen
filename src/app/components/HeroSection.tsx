@@ -56,11 +56,14 @@ export default function HeroSection({ isDark }: HeroProps) {
             Cloud-Telefonanlagen · Schweiz · Winterthur · Schaffhausen · Thurgau
           </p>
 
-          {/* H1 mit Autotype */}
+          {/* H1 mit Autotype – voller Text per sr-only für Crawler/KI (kein JS nötig) */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white min-h-[1.5em] max-w-5xl">
-            <span className="text-[#3C9646]">{displayGreen}</span>
-            {displayRest}
-            {showCursor && <span className="animate-pulse">|</span>}
+            <span className="sr-only">{fullText}</span>
+            <span aria-hidden="true">
+              <span className="text-[#3C9646]">{displayGreen}</span>
+              {displayRest}
+              {showCursor && <span className="animate-pulse">|</span>}
+            </span>
           </h1>
 
           {/* CTAs */}
@@ -96,9 +99,12 @@ export default function HeroSection({ isDark }: HeroProps) {
 
             {/* H1 mit Autotype (Mobile displayed as div to avoid duplicate H1 tag) */}
             <div className="text-3xl font-bold leading-tight sm:text-4xl min-h-[3em] sm:min-h-[2.5em]" role="heading" aria-level={1}>
-              <span className="text-[#3C9646]">{displayGreen}</span>
-              {displayRest}
-              {showCursor && <span className="animate-pulse">|</span>}
+              <span className="sr-only">{fullText}</span>
+              <span aria-hidden="true">
+                <span className="text-[#3C9646]">{displayGreen}</span>
+                {displayRest}
+                {showCursor && <span className="animate-pulse">|</span>}
+              </span>
             </div>
 
             {/* CTAs */}
@@ -138,7 +144,7 @@ export default function HeroSection({ isDark }: HeroProps) {
                 <span className="text-[#3C9646]">✔</span> Keine physische Telefonanlage mehr notwendig
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-[#3C9646]">✔</span> Skalierbar von 5–100 Benutzern
+                <span className="text-[#3C9646]">✔</span> Skalierbar von 1 bis 150 Benutzern (vPBX BASIC &amp; PLUS)
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-[#3C9646]">✔</span> Besonders geeignet für KMU & Mehrstandort-Unternehmen

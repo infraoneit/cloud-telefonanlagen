@@ -7,37 +7,78 @@ import { useMemo, useState, useEffect } from "react";
 /* -------------------------------------------------------------------------- */
 
 type TariffType = "minute" | "flat_ch" | "flat_cheu";
+type ModelType = "basic" | "plus";
+type TermType = "24" | "12";
 
 /* -------------------------------------------------------------------------- */
-/*                         Helper: Benutzerpaket-Preis                         */
+/*                  vPBX Lizenzpreise (peoplefone, offiziell)                 */
+/*  Pauschalpreis pro Benutzerstufe / Monat, inkl. MwSt.                      */
+/*  Quelle: peoplefone.com – vPBX BASIC & vPBX PLUS                            */
 /* -------------------------------------------------------------------------- */
 
-function getUserPackage(count: number) {
+type Tier = { max: number; price: number; label: string };
+
+const LICENSE_TIERS: Record<ModelType, Record<TermType, Tier[]>> = {
+  basic: {
+    "24": [
+      { max: 5, price: 15, label: "1–5 Benutzer" },
+      { max: 10, price: 25, label: "6–10 Benutzer" },
+    ],
+    "12": [
+      { max: 5, price: 20, label: "1–5 Benutzer" },
+      { max: 10, price: 30, label: "6–10 Benutzer" },
+    ],
+  },
+  plus: {
+    "24": [
+      { max: 5, price: 25, label: "1–5 Benutzer" },
+      { max: 10, price: 35, label: "6–10 Benutzer" },
+      { max: 20, price: 55, label: "11–20 Benutzer" },
+      { max: 30, price: 75, label: "21–30 Benutzer" },
+    ],
+    "12": [
+      { max: 5, price: 30, label: "1–5 Benutzer" },
+      { max: 10, price: 40, label: "6–10 Benutzer" },
+      { max: 20, price: 60, label: "11–20 Benutzer" },
+      { max: 30, price: 80, label: "21–30 Benutzer" },
+    ],
+  },
+};
+
+// Maximale Benutzerzahl je Modell
+const MODEL_MAX_USERS: Record<ModelType, number> = {
+  basic: 10,
+  plus: 150,
+};
+
+// Bis zu dieser Benutzerzahl gibt es einen Fixpreis; darüber „auf Anfrage".
+const QUOTE_THRESHOLD: Record<ModelType, number> = {
+  basic: 10,
+  plus: 30,
+};
+
+/* -------------------------------------------------------------------------- */
+/*                    Helper: Lizenzpaket inkl. Quote-Flag                    */
+/* -------------------------------------------------------------------------- */
+
+function getLicensePackage(model: ModelType, term: TermType, count: number) {
   if (count <= 0) {
-    return { label: "0 Benutzer", price: 0 };
+    return { label: "0 Benutzer", price: 0, isQuote: false };
   }
 
-  if (count <= 5) {
-    return { label: "1–5 Benutzer", price: 15 };
+  // Über der Fixpreis-Grenze (nur vPBX PLUS > 30) → individuelle Offerte
+  if (count > QUOTE_THRESHOLD[model]) {
+    return {
+      label: `${count} Benutzer (über ${QUOTE_THRESHOLD[model]})`,
+      price: 0,
+      isQuote: true,
+    };
   }
 
-  if (count <= 10) {
-    return { label: "6–10 Benutzer", price: 25 };
-  }
+  const tiers = LICENSE_TIERS[model][term];
+  const tier = tiers.find((t) => count <= t.max) ?? tiers[tiers.length - 1];
 
-  if (count <= 20) {
-    return { label: "11–20 Benutzer", price: 35 };
-  }
-
-  if (count <= 30) {
-    return { label: "21–30 Benutzer", price: 45 };
-  }
-
-  if (count <= 40) {
-    return { label: "31–40 Benutzer", price: 55 };
-  }
-
-  return { label: "41–50 Benutzer", price: 65 };
+  return { label: tier.label, price: tier.price, isQuote: false };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -81,6 +122,10 @@ type Props = {
 export default function PeoplefoneCalculatorSection({ isDark }: Props) {
   /* --------------------------------- State --------------------------------- */
 
+  // Produktwahl
+  const [model, setModel] = useState<ModelType>("plus");
+  const [term, setTerm] = useState<TermType>("24");
+
   // Eingaben
   const [userInput, setUserInput] = useState("10");
   const [numbersInput, setNumbersInput] = useState("5");
@@ -105,8 +150,10 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
     users,
     numbers,
     softphones,
+    softphonesIncluded,
     pkgLabel,
     pkgPrice,
+    isQuote,
     tariffLabel,
     tariffPrice,
     softphonePrice,
@@ -123,11 +170,20 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
     /* ----------------------- Begrenzung + Grundlogik ----------------------- */
 
-    const users = Math.min(Math.max(uRaw, 0), 50);
+    const modelMax = MODEL_MAX_USERS[model];
+    const users = Math.min(Math.max(uRaw, 0), modelMax);
     const numbers = Math.min(Math.max(nRaw, 0), 300);
-    const softphones = Math.min(Math.max(sRaw, 0), users);
 
-    const pkg = getUserPackage(users);
+    const pkg = getLicensePackage(model, term, users);
+
+    /* ---------------------------- Softphone-Preis --------------------------- */
+    /* PLUS: Softphones inklusive. BASIC: optional CHF 2.– pro Benutzer.       */
+
+    const softphonesIncluded = model === "plus";
+    const softphones = softphonesIncluded
+      ? users
+      : Math.min(Math.max(sRaw, 0), users);
+    const softphonePrice = softphonesIncluded ? 0 : softphones * 2;
 
     /* -------------------------- Tarif / Flatrates --------------------------- */
 
@@ -144,8 +200,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         tariffPrice = flatCH * 19;
         tariffLabel =
-          `Flatrate Schweiz – ${flatCH} × CHF 19.– ` +
-          `(1000 Min Festnetz / 200 Min Mobil Schweiz)`;
+          `FLAT CH – ${flatCH} × CHF 19.– ` +
+          `(1000 Min Festnetz / 200 Min Mobil CH)`;
       } else if (tariff === "flat_cheu") {
         const flatCHEU = Math.min(
           Math.max(toInt(flatCHEUCount, 0), 1),
@@ -154,8 +210,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         tariffPrice = flatCHEU * 22;
         tariffLabel =
-          `Flatrate Schweiz+EU – ${flatCHEU} × CHF 22.– ` +
-          `(1000 Min Festnetz CH+EU / 300 Min Mobil CH+EU)`;
+          `FLAT CH & EU – ${flatCHEU} × CHF 22.– ` +
+          `(1000 Min Festnetz / 300 Min Mobil CH & EU)`;
       }
     } else {
       // keine Benutzer → Flats sind faktisch inaktiv
@@ -163,10 +219,6 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       tariffLabel =
         "Minutentarif – Abrechnung pro Minute gemäss Tarifliste (keine Benutzer ausgewählt)";
     }
-
-    /* ---------------------------- Softphone-Preis --------------------------- */
-
-    const softphonePrice = softphones * 2;
 
     /* --------------------------- Rufnummern-Preis --------------------------- */
 
@@ -178,9 +230,13 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
     const ipPrice = fixedIp ? 10 : 0;
 
     /* ----------------------------- Gesamt-Preis ----------------------------- */
+    /* Bei „auf Anfrage" (PLUS > 30) ist kein Fixpreis berechenbar → null.     */
 
-    const total =
-      users > 0 || numbers > 0
+    const isQuote = pkg.isQuote;
+
+    const total = isQuote
+      ? null
+      : users > 0 || numbers > 0
         ? pkg.price +
         tariffPrice +
         softphonePrice +
@@ -195,8 +251,10 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       users,
       numbers,
       softphones,
+      softphonesIncluded,
       pkgLabel: pkg.label,
       pkgPrice: pkg.price,
+      isQuote,
       tariffLabel,
       tariffPrice,
       softphonePrice,
@@ -209,6 +267,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
     userInput,
     numbersInput,
     softphoneInput,
+    model,
+    term,
     tariff,
     flatCHCount,
     flatCHEUCount,
@@ -221,6 +281,12 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
   /* ------------------------------------------------------------------------ */
 
   const hasUsers = toInt(userInput, 0) > 0;
+  const overBasicLimit =
+    model === "basic" && toInt(userInput, 0) > MODEL_MAX_USERS.basic;
+
+  // Einstiegspreis je Modell für die Modell-Karten
+  const basicFrom = LICENSE_TIERS.basic[term][0].price;
+  const plusFrom = LICENSE_TIERS.plus[term][0].price;
 
   /* ------------------------------------------------------------------------ */
   /*                           Effekte / Korrekturen                          */
@@ -255,6 +321,20 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
     }
   }, [hasUsers, tariff, flatCHCount, flatCHEUCount]);
 
+  /* ------------------------------------------------------------------------ */
+  /*                              Handler / Wechsel                           */
+  /* ------------------------------------------------------------------------ */
+
+  // Modellwechsel: Benutzer auf Modell-Maximum begrenzen (BASIC max. 10)
+  function handleModelChange(next: ModelType) {
+    setModel(next);
+
+    const max = MODEL_MAX_USERS[next];
+    if (toInt(userInput, 0) > max) {
+      setUserInput(String(max));
+    }
+  }
+
   // Tarifwechsel: nicht gewählte Flat-Mengen zurücksetzen
   function handleTariffChange(next: TariffType) {
     setTariff(next);
@@ -272,22 +352,32 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
   /*                         Mail-Body für Offertlink                         */
   /* ------------------------------------------------------------------------ */
 
+  const modelLabel = model === "plus" ? "vPBX PLUS" : "vPBX BASIC";
+  const termLabel = term === "24" ? "24 Monate" : "12 Monate";
+
   const mailBody = encodeURIComponent(
     [
-      "Anfrage Cloud-Telefonanlage – Peoplefone Hosted",
+      `Anfrage Cloud-Telefonanlage – peoplefone ${modelLabel}`,
+      `Vertragslaufzeit: ${termLabel}`,
       "",
-      `Benutzerpaket: ${pkgLabel} (${users}) – CHF ${pkgPrice}.–/Monat`,
+      isQuote
+        ? `Benutzer: ${users} – über 30 Benutzer, bitte individuelle Offerte`
+        : `Lizenzpaket ${modelLabel}: ${pkgLabel} (${users}) – CHF ${pkgPrice}.–/Monat`,
       `Tarifmodell: ${tariffLabel} – CHF ${tariffPrice}.–/Monat`,
       `Rufnummern (DIDs): ${numbers} – CHF ${numberPrice}.–/Monat`,
-      `Softphone-Lizenzen: ${softphones} – CHF ${softphonePrice}.–/Monat`,
+      softphonesIncluded
+        ? `Softphone-Lizenzen: inklusive (vPBX PLUS)`
+        : `Softphone-Lizenzen: ${softphones} – CHF ${softphonePrice}.–/Monat`,
       `Internet 1 Gbit/s: ${internet ? "Ja (+49.–/Monat)" : "Nein"}`,
       `Fixe IP-Adresse: ${fixedIp ? "Ja (+10.–/Monat)" : "Nein"}`,
       "",
       "-----------------------------------------",
-      `Monatlicher Fixpreis: CHF ${total}.–`,
+      isQuote
+        ? `Monatlicher Fixpreis: auf Anfrage (über 30 Benutzer)`
+        : `Monatlicher Fixpreis: CHF ${total}.–`,
       "-----------------------------------------",
       "",
-      "Einmalige Installation / Aufschaltung / Portierung wird separat offeriert.",
+      "Preise inkl. MwSt. Einmalige Installation / Aufschaltung / Portierung wird separat offeriert.",
     ].join("\n")
   );
 
@@ -296,7 +386,7 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
   /* ------------------------------------------------------------------------ */
 
   const panelOuter =
-    "rounded-2xl p-8 text-[15px] leading-relaxed border";
+    "rounded-2xl p-6 sm:p-8 text-[15px] leading-relaxed border";
 
   const panelTheme = isDark
     ? "bg-white/5 border-white/10"
@@ -311,6 +401,22 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
   const smallMuted = isDark ? "text-white/60" : "text-black/60";
 
   const hrClass = isDark ? "border-white/20" : "border-black/10";
+
+  // Segmentierte Schalter (Laufzeit)
+  const segInactive = isDark
+    ? "bg-black/30 text-white/80 border-white/15 hover:bg-white/10"
+    : "bg-[#F8F8F8] text-black/70 border-black/15 hover:bg-black/5";
+  const segActive = "bg-[#3C9646] text-black border-[#3C9646]";
+
+  // Modell-Karten
+  const modelCardBase =
+    "flex-1 rounded-xl border p-4 text-left transition-colors cursor-pointer";
+  const modelCardInactive = isDark
+    ? "bg-black/30 border-white/15 hover:bg-white/5"
+    : "bg-[#F8F8F8] border-black/15 hover:bg-black/5";
+  const modelCardActive = isDark
+    ? "bg-[#3C9646]/15 border-[#3C9646]"
+    : "bg-[#3C9646]/10 border-[#3C9646]";
 
   /* ------------------------------------------------------------------------ */
   /*                                   JSX                                    */
@@ -333,6 +439,11 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
         Berechnen Sie jetzt Ihre Cloud-Telefonanlage
       </h2>
 
+      <p className={`mt-3 max-w-3xl text-sm md:text-base ${smallMuted}`}>
+        Wählen Sie Modell (vPBX BASIC oder PLUS) und Laufzeit – der monatliche
+        Fixpreis aktualisiert sich automatisch. Alle Preise inkl. MwSt.
+      </p>
+
       {/* ------------------------------------------------------------------ */}
       {/*                             Eingabepanel                           */}
       {/* ------------------------------------------------------------------ */}
@@ -340,19 +451,96 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       <div
         className={`${panelOuter} ${panelTheme} mt-10 space-y-8`}
       >
+        {/* --------------------------- Modellwahl --------------------------- */}
+
+        <div>
+          <p className={`mb-2 font-medium ${labelMuted}`}>Modell</p>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            {/* vPBX BASIC */}
+            <button
+              type="button"
+              onClick={() => handleModelChange("basic")}
+              aria-pressed={model === "basic"}
+              className={`${modelCardBase} ${model === "basic" ? modelCardActive : modelCardInactive
+                }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-bold">vPBX BASIC</span>
+                <span className="text-sm font-semibold text-[#3C9646]">
+                  ab CHF {basicFrom}.–
+                </span>
+              </div>
+              <p className={`mt-1 text-xs ${smallMuted}`}>
+                Bis 10 Benutzer · Grundfunktionen (1× IVR, 1× Warteschleife).
+                Softphone optional.
+              </p>
+            </button>
+
+            {/* vPBX PLUS */}
+            <button
+              type="button"
+              onClick={() => handleModelChange("plus")}
+              aria-pressed={model === "plus"}
+              className={`${modelCardBase} ${model === "plus" ? modelCardActive : modelCardInactive
+                }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-bold">vPBX PLUS</span>
+                <span className="text-sm font-semibold text-[#3C9646]">
+                  ab CHF {plusFrom}.–
+                </span>
+              </div>
+              <p className={`mt-1 text-xs ${smallMuted}`}>
+                Bis 150 Benutzer · Voller Funktionsumfang inkl. Softphone,
+                Analytics, 5× IVR/Warteschleife, Visual Callflow.
+              </p>
+            </button>
+          </div>
+        </div>
+
+        {/* --------------------------- Laufzeit ----------------------------- */}
+
+        <div>
+          <p className={`mb-2 font-medium ${labelMuted}`}>Vertragslaufzeit</p>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setTerm("24")}
+              aria-pressed={term === "24"}
+              className={`flex-1 rounded-md border px-4 py-2 text-sm font-semibold transition-colors ${term === "24" ? segActive : segInactive
+                }`}
+            >
+              24 Monate
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTerm("12")}
+              aria-pressed={term === "12"}
+              className={`flex-1 rounded-md border px-4 py-2 text-sm font-semibold transition-colors ${term === "12" ? segActive : segInactive
+                }`}
+            >
+              12 Monate
+            </button>
+          </div>
+        </div>
+
         {/* ------------------------- Benutzeranzahl ------------------------- */}
 
         <div>
           <label
             className={`mb-1 block font-medium ${labelMuted}`}
           >
-            Anzahl Benutzer (mit eigener Durchwahl, min. 5)
+            Anzahl Benutzer (mit eigener Durchwahl) –{" "}
+            {model === "basic" ? "max. 10 (vPBX BASIC)" : "bis 150 (vPBX PLUS)"}
           </label>
 
           <input
             type="number"
             min={0}
-            max={50}
+            max={MODEL_MAX_USERS[model]}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             className={
@@ -361,9 +549,22 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
             }
           />
 
-          <p className={`mt-1 text-xs ${smallMuted}`}>
-            Paket: {pkgLabel} – pauschal CHF {pkgPrice}.– pro Monat
-          </p>
+          {isQuote ? (
+            <p className="mt-1 text-xs font-medium text-[#3C9646]">
+              Über 30 Benutzer: individuelle Offerte – siehe Preisübersicht.
+            </p>
+          ) : (
+            <p className={`mt-1 text-xs ${smallMuted}`}>
+              Paket: {pkgLabel} – pauschal CHF {pkgPrice}.– pro Monat ({termLabel})
+            </p>
+          )}
+
+          {overBasicLimit && (
+            <p className="mt-1 text-xs font-medium text-[#3C9646]">
+              vPBX BASIC unterstützt max. 10 Benutzer – für mehr bitte vPBX PLUS
+              wählen.
+            </p>
+          )}
         </div>
 
         {/* --------------------------- Rufnummern --------------------------- */}
@@ -390,32 +591,49 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
         {/* ------------------------- Softphone-Lizenzen ------------------------ */}
 
-        <div>
-          <label
-            className={`mb-1 block font-medium ${labelMuted}`}
+        {model === "plus" ? (
+          <div
+            className={`rounded-lg border p-4 text-sm ${isDark
+              ? "border-[#3C9646]/40 bg-[#3C9646]/10"
+              : "border-[#3C9646]/40 bg-[#3C9646]/5"
+              }`}
           >
-            Softphone-Lizenzen (PC-App)
-          </label>
+            <p className="font-medium text-[#3C9646]">
+              Softphones inklusive
+            </p>
+            <p className={`mt-1 text-xs ${smallMuted}`}>
+              Bei vPBX PLUS sind Softphone-Lizenzen (PC- &amp; Mac-App) sowie
+              Analytics Basic bereits im Paket enthalten – keine Zusatzkosten.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <label
+              className={`mb-1 block font-medium ${labelMuted}`}
+            >
+              Softphone-Lizenzen (PC-App)
+            </label>
 
-          <input
-            type="number"
-            min={0}
-            max={users || 0}
-            value={softphoneInput}
-            onChange={(e) => setSoftphoneInput(e.target.value)}
-            disabled={!hasUsers}
-            className={
-              "w-full rounded px-3 py-3 text-[15px] outline-none " +
-              inputTheme +
-              (!hasUsers ? " opacity-50 cursor-not-allowed" : "")
-            }
-          />
+            <input
+              type="number"
+              min={0}
+              max={users || 0}
+              value={softphoneInput}
+              onChange={(e) => setSoftphoneInput(e.target.value)}
+              disabled={!hasUsers}
+              className={
+                "w-full rounded px-3 py-3 text-[15px] outline-none " +
+                inputTheme +
+                (!hasUsers ? " opacity-50 cursor-not-allowed" : "")
+              }
+            />
 
-          <p className={`mt-1 text-xs ${smallMuted}`}>
-            CHF 2.– pro Benutzer mit Softphone. Ideal für Home-Office
-            und Laptop-Arbeitsplätze.
-          </p>
-        </div>
+            <p className={`mt-1 text-xs ${smallMuted}`}>
+              CHF 2.– pro Benutzer mit Softphone. Bei vPBX PLUS bereits
+              inklusive. Ideal für Home-Office und Laptop-Arbeitsplätze.
+            </p>
+          </div>
+        )}
 
         {/* ---------------------------- Tarifmodell ---------------------------- */}
 
@@ -425,8 +643,6 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
           >
             Tarifmodell
           </p>
-
-          {/* Minutentarif ---------------------------------------------------- */}
 
           {/* Minutentarif ---------------------------------------------------- */}
 
@@ -463,8 +679,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
               />
 
               <span className="flex-1 sm:flex-none">
-                Flatrate CH – 1000 Min Festnetz / 200 Min Mobil Schweiz
-                – CHF 19.– / Benutzer
+                FLAT CH – 1000 Min Festnetz / 200 Min Mobil Schweiz
+                – CHF 19.– / Paket
               </span>
             </div>
 
@@ -490,7 +706,7 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
             )}
           </label>
 
-          {/* Flatrate CH+EU -------------------------------------------------- */}
+          {/* Flatrate CH & EU ------------------------------------------------ */}
 
           <label
             className={
@@ -507,8 +723,8 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
               />
 
               <span className="flex-1 sm:flex-none">
-                Flatrate CH+EU – 1000 Min Festnetz CH+EU / 300 Min Mobil
-                CH+EU – CHF 22.– / Benutzer
+                FLAT CH &amp; EU – 1000 Min Festnetz / 300 Min Mobil CH &amp; EU
+                – CHF 22.– / Paket
               </span>
             </div>
 
@@ -541,7 +757,7 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
           <p
             className={`mb-2 font-medium ${labelMuted}`}
           >
-            Internet & Netzwerk
+            Internet &amp; Netzwerk
           </p>
 
           <label
@@ -581,20 +797,24 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       {/* ------------------------------------------------------------------ */}
 
       <div className={`${panelOuter} ${panelTheme} mt-10`}>
-        <h3 className="mb-4 text-center text-xl font-semibold">
+        <h3 className="mb-1 text-center text-xl font-semibold">
           Monatlicher Fixpreis für Ihre Telefonie
         </h3>
 
+        <p className={`mb-6 text-center text-sm font-medium ${smallMuted}`}>
+          peoplefone {modelLabel} · {termLabel}
+        </p>
+
         <div className="space-y-3 text-sm md:text-[15px]">
-          {/* Benutzerpaket -------------------------------------------------- */}
+          {/* Lizenzpaket ---------------------------------------------------- */}
 
           <div className="flex justify-between items-start gap-4">
             <span className="flex-1">
-              Benutzerpaket ({pkgLabel})
+              Lizenzpaket ({pkgLabel})
             </span>
 
-            <span className="font-medium whitespace-nowrap">
-              CHF {pkgPrice}.–
+            <span className="font-medium whitespace-nowrap text-right">
+              {isQuote ? "auf Anfrage" : `CHF ${pkgPrice}.–`}
             </span>
           </div>
 
@@ -628,11 +848,12 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
 
           <div className="flex justify-between items-start gap-4">
             <span className="flex-1">
-              Softphone-Lizenzen ({softphones} × CHF 2.–)
+              Softphone-Lizenzen{" "}
+              {softphonesIncluded ? "" : `(${softphones} × CHF 2.–)`}
             </span>
 
-            <span className="font-medium whitespace-nowrap">
-              CHF {softphonePrice}.–
+            <span className="font-medium whitespace-nowrap text-right">
+              {softphonesIncluded ? "inklusive" : `CHF ${softphonePrice}.–`}
             </span>
           </div>
 
@@ -668,15 +889,30 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
             Monatlicher Fixpreis
           </span>
 
-          <span className="text-3xl font-bold md:text-4xl text-right">
-            CHF {total}.–
-          </span>
+          {isQuote ? (
+            <span className="text-2xl font-bold md:text-3xl text-right text-[#3C9646]">
+              Auf Anfrage
+            </span>
+          ) : (
+            <span className="text-3xl font-bold md:text-4xl text-right">
+              CHF {total}.–
+            </span>
+          )}
         </div>
 
+        {isQuote && (
+          <p className={`mt-3 text-xs ${smallMuted}`}>
+            Für vPBX PLUS mit über 30 Benutzern erstellt peoplefone /
+            InfraOne ein individuelles Angebot. Fordern Sie unten Ihre
+            persönliche Offerte an.
+          </p>
+        )}
+
         <p className={`mt-4 text-[11px] ${smallMuted}`}>
-          Zzgl. einmaliger Installation, Aufschaltung und allfälliger
-          Portierungskosten. Spezialnummern (z.B. 0800, 058) werden
-          separat offeriert.
+          Alle Preise inkl. MwSt., Lizenzpreis als Pauschale pro Benutzerstufe
+          (nicht pro Benutzer) bei {termLabel} Laufzeit. Zzgl. einmaliger
+          Installation, Aufschaltung und allfälliger Portierungskosten.
+          Spezialnummern (z.B. 0800, 058) werden separat offeriert.
         </p>
       </div>
 
@@ -684,14 +920,14 @@ export default function PeoplefoneCalculatorSection({ isDark }: Props) {
       {/*                           Call-To-Action                           */}
       {/* ------------------------------------------------------------------ */}
 
-
-
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
-          href={`mailto:info@infraone.ch?subject=Cloud-Telefonanlage%20Offerte&body=${mailBody}`}
+          href={`mailto:info@infraone.ch?subject=Cloud-Telefonanlage%20Offerte%20(${modelLabel})&body=${mailBody}`}
           className="flex-1 rounded-md bg-[#3C9646] py-3 text-center text-sm font-semibold text-black hover:bg-[#2d7e36]"
         >
-          Offerte mit diesen Angaben erhalten
+          {isQuote
+            ? "Individuelle Offerte anfordern"
+            : "Offerte mit diesen Angaben erhalten"}
         </a>
 
         <a

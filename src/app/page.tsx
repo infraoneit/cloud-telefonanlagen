@@ -9,9 +9,31 @@ import CloudTelefonieSection from "./components/CloudTelefonieSection";
 import PeoplefoneCalculatorSection from "./components/PeoplefoneCalculatorSection";
 import AboutSection from "./components/AboutSection";
 import PricesSection from "./components/PricesSection";
-import FAQSection from "./components/FAQSection";
+import FAQSection, { faqs } from "./components/FAQSection";
 import FooterSection from "./components/FooterSection";
 import WhatsAppButton from "./components/WhatsAppButton";
+
+const SITE_URL = "https://www.cloud-telefonanlagen.ch";
+
+/* FAQ-Schema aus denselben Inhalten wie die sichtbare FAQ-Sektion */
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Startseite", item: SITE_URL },
+  ],
+};
 
 export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -79,6 +101,18 @@ export default function Home() {
       {/* Footer bleibt immer schwarz */}
       <FooterSection />
       <WhatsAppButton />
+
+      {/* STRUCTURED DATA – FAQPage + BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </main>
   );
 }
